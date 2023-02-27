@@ -4,10 +4,11 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
-// TODO: write a JavaDoc for the class
 
-/**
- * @author
+/** 
+ * Represents the add instruction, which takes two registers, adds their values
+ * and saves the result in the first given register.
+ * @author jgebor01
  */
 
 public class AddInstruction extends Instruction {
@@ -33,5 +34,34 @@ public class AddInstruction extends Instruction {
 	@Override
 	public String toString() {
 		return getLabelString() + getOpcode() + " " + result + " " + source;
+	}
+
+	@Override
+	public boolean equals(Object b) {
+		if (!b.getClass().equals(AddInstruction.class)) {
+			return false;
+		}
+		AddInstruction b_instruction = (AddInstruction) b;
+		if(!b_instruction.label.equals(this.label)) {
+			return false;
+		}
+		if(!b_instruction.result.equals(this.result)) {
+			return false;
+		}
+		if(!b_instruction.source.equals(this.source)) {
+			return false;
+		}
+		
+		return true;
+		
+	}
+
+	@Override
+	public int hashCode() {
+		int hashResult = label.hashCode();
+		hashResult = hashResult * 31 + opcode.hashCode();
+		hashResult = hashResult * 31 + result.hashCode();
+		hashResult = hashResult * 31 + source.hashCode();
+		return hashResult;
 	}
 }
