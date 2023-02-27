@@ -11,37 +11,43 @@ import sml.Registers;
 
 import static sml.Registers.Register.*;
 
-class AddInstructionTest {
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+public class OutInstructionTest {
   private Machine machine;
   private Registers registers;
 
+  private final ByteArrayOutputStream output = new ByteArrayOutputStream();
+  private final PrintStream originalOutput = System.out;
+
   @BeforeEach
   void setUp() {
+    System.setOut(new PrintStream(output));
     machine = new Machine(new Registers());
     registers = machine.getRegisters();
   }
 
   @AfterEach
   void tearDown() {
+    System.setOut(originalOutput);
     machine = null;
     registers = null;
   }
 
   @Test
   void executeValid() {
-    registers.set(EAX, 5);
-    registers.set(EBX, 6);
-    Instruction instruction = new AddInstruction(null, EAX, EBX);
+    registers.set(EAX, 9);
+    Instruction instruction = new OutInstruction(null, EAX);
     instruction.execute(machine);
-    Assertions.assertEquals(11, machine.getRegisters().get(EAX));
+    Assertions.assertEquals("9\n", output.toString());
   }
 
   @Test
   void executeValidTwo() {
-    registers.set(EAX, -5);
-    registers.set(EBX, 6);
-    Instruction instruction = new AddInstruction(null, EAX, EBX);
+    registers.set(EBX, 77);
+    Instruction instruction = new OutInstruction(null, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(1, machine.getRegisters().get(EAX));
+    Assertions.assertEquals("77\n", output.toString());
   }
 }

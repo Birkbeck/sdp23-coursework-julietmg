@@ -11,7 +11,7 @@ import sml.Registers;
 
 import static sml.Registers.Register.*;
 
-class AddInstructionTest {
+class SubInstructionTest {
   private Machine machine;
   private Registers registers;
 
@@ -29,19 +29,19 @@ class AddInstructionTest {
 
   @Test
   void executeValid() {
-    registers.set(EAX, 5);
-    registers.set(EBX, 6);
-    Instruction instruction = new AddInstruction(null, EAX, EBX);
+    registers.set(EAX, 56);
+    registers.set(EBX, 20);
+    Instruction instruction = new SubInstruction(null, EAX, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(11, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(36, machine.getRegisters().get(EAX));
   }
 
   @Test
   void executeValidTwo() {
-    registers.set(EAX, -5);
-    registers.set(EBX, 6);
-    Instruction instruction = new AddInstruction(null, EAX, EBX);
+    registers.set(EAX, 835);
+    registers.set(EBX, -222);
+    Instruction instruction = new SubInstruction(null, EAX, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(1, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(1057, machine.getRegisters().get(EAX));
   }
 }
