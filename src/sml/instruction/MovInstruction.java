@@ -12,18 +12,19 @@ import sml.RegisterName;
 
 public class MovInstruction extends Instruction {
     private final RegisterName result;
+    private final int source;
 
     public static final String OP_CODE = "mov";
 
-    public MovInstruction(String label, RegisterName result) {
+    public MovInstruction(String label, RegisterName result, int source) {
         super(label, OP_CODE);
         this.result = result;
+        this.source = source;
     }
 
     @Override
     public int execute(Machine m) {
-        int value = m.getRegisters().get(result);
-        m.getRegisters().set(result, value);
+        m.getRegisters().set(result, source);
         return NORMAL_PROGRAM_COUNTER_UPDATE;
     }
 

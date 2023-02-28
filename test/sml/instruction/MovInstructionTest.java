@@ -29,17 +29,15 @@ public class MovInstructionTest {
 
     @Test
     void executeValid() {
-        registers.set(EAX, 673);
-        Instruction instruction = new MovInstruction(null, EAX);
+        Instruction instruction = new MovInstruction(null, EAX, 50);
         instruction.execute(machine);
-        Assertions.assertEquals(673, machine.getRegisters().get(EAX));
+        Assertions.assertEquals(50, machine.getRegisters().get(EAX));
     }
 
     @Test
     void executeValidTwo() {
-        registers.set(EBX, -34);
-        Instruction instruction = new MovInstruction(null, EBX);
+        Instruction instruction = new MovInstruction(null, EBX,-37);
         instruction.execute(machine);
-        Assertions.assertEquals(-34, machine.getRegisters().get(EBX));
+        Assertions.assertEquals(-37, machine.getRegisters().get(EBX));
     }
 }

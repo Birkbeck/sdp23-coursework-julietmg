@@ -21,11 +21,12 @@ public final class Translator {
 
     private final String fileName; // source file of SML code
 
-    // line contains the characters in the current line that's not been processed yet
+    // line contains the characters in the current line that's not been processed
+    // yet
     private String line = "";
 
     public Translator(String fileName) {
-        this.fileName =  fileName;
+        this.fileName = fileName;
     }
 
     // translate the small program in the file into lab (the labels) and
@@ -66,6 +67,7 @@ public final class Translator {
             return null;
 
         String opcode = scan();
+
         switch (opcode) {
             case AddInstruction.OP_CODE -> {
                 String r = scan();
@@ -93,21 +95,17 @@ public final class Translator {
             }
             case JnzInstruction.OP_CODE -> {
                 String s = scan();
-                String targetLabel = scan(); 
+                String targetLabel = scan();
                 return new JnzInstruction(label, Register.valueOf(s), targetLabel);
             }
             case MovInstruction.OP_CODE -> {
                 String r = scan();
-                return new MovInstruction(label, Register.valueOf(r));
+                String value = scan();
+                return new MovInstruction(label, Register.valueOf(r), Integer.parseInt(value));
             }
 
-
-            
-
-            // TODO: Then, replace the switch by using the Reflection API
-
             // TODO: Next, use dependency injection to allow this machine class
-            //       to work with different sets of opcodes (different CPUs)
+            // to work with different sets of opcodes (different CPUs)
 
             default -> {
                 System.out.println("Unknown instruction: " + opcode);
@@ -115,7 +113,6 @@ public final class Translator {
         }
         return null;
     }
-
 
     private String getLabel() {
         String word = scan();
