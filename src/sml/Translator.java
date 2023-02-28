@@ -15,7 +15,7 @@ import static sml.Registers.Register;
  * <p>
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  *
- * @author ...
+ * @author jgebor01
  */
 public final class Translator {
 
@@ -91,9 +91,18 @@ public final class Translator {
                 String s = scan();
                 return new OutInstruction(label, Register.valueOf(s));
             }
-            
+            case JnzInstruction.OP_CODE -> {
+                String s = scan();
+                String targetLabel = scan(); 
+                return new JnzInstruction(label, Register.valueOf(s), targetLabel);
+            }
+            case MovInstruction.OP_CODE -> {
+                String r = scan();
+                return new MovInstruction(label, Register.valueOf(r));
+            }
 
-            // TODO: add code for all other types of instructions
+
+            
 
             // TODO: Then, replace the switch by using the Reflection API
 
