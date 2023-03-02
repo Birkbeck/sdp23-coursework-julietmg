@@ -57,4 +57,14 @@ public class JnzInstructionTest {
         Assertions.assertEquals(69, nextInstruction);
     }
 
+    @Test
+    void jumpsToNextIfLabelDoesntExist() {
+    
+        registers.set(EAX, 150);
+        Instruction instruction = new JnzInstruction(null, EAX, "julcia");
+        int nextInstruction = instruction.execute(machine);
+        Assertions.assertEquals(NORMAL_PROGRAM_COUNTER_UPDATE, nextInstruction);
+    }
+
+
 }

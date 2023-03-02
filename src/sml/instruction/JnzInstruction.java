@@ -3,6 +3,7 @@ package sml.instruction;
 import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
+import sml.Labels.LabelDoesntExistException;
 
 /**
  * Represents the jnz instruction, which takes a register, checks whether its content
@@ -27,7 +28,12 @@ public class JnzInstruction extends Instruction {
     public int execute(Machine m) {
         int value = m.getRegisters().get(source);
         if (value != 0) {
-            return m.getLabels().getAddress(targetLabel);
+            try {
+                return m.getLabels().getAddress(targetLabel);
+            } catch (LabelDoesntExistException e) {
+                System.err.println("Couldn't jump to label." + e);
+            }
+            return NORMAL_PROGRAM_COUNTER_UPDATE;
         }
         return NORMAL_PROGRAM_COUNTER_UPDATE;
     }

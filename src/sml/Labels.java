@@ -8,39 +8,54 @@ import java.util.stream.Collectors;
 /**
  * This class represents labels, which are used to tag places in the code.
  * They're used in the jnz instruction.
+ * 
  * @author jgebor01
  */
 public final class Labels {
 	private final Map<String, Integer> labels = new HashMap<>();
 
-    public static class DuplicateLabelException extends Exception {
+	public static class DuplicateLabelException extends Exception {
 		private String label;
 		private int firstLine;
 		private int secondLine;
+
 		public DuplicateLabelException(String label, int addressFirst, int addressSecond) {
 			this.label = label;
 			this.firstLine = addressFirst + 1;
 			this.secondLine = addressSecond + 1;
 		}
+
 		public String toString() {
 			return label + " appears on both lines " + firstLine + " and " + secondLine;
+		}
+	}
+
+	public static class LabelDoesntExistException extends Exception {
+		private String label;
+
+		public LabelDoesntExistException(String label) {
+			this.label = label;
+		}
+
+		public String toString() {
+			return label + " is not a valid label";
 		}
 	}
 
 	/**
 	 * Adds a label with the associated address to the map.
 	 *
-	 * @param label the label
+	 * @param label   the label
 	 * @param address the address the label refers to
 	 * @throws Exception
 	 */
 	public void addLabel(String label, int address) throws DuplicateLabelException {
 		Objects.requireNonNull(label);
-	
+
 		if (labels.get(label) != null) {
 			throw new DuplicateLabelException(label, labels.get(label), address);
 		}
-		
+
 		labels.put(label, address);
 	}
 
@@ -49,11 +64,15 @@ public final class Labels {
 	 *
 	 * @param label the label
 	 * @return the address the label refers to
+	 * @throws LabelDoesntExistException
 	 */
-	public int getAddress(String label) {
-		// TODO: Where can NullPointerException be thrown here?
-		// (Write an explanation.)
-		// Add code to deal with non-existent labels.
+	public int getAddress(String label) throws LabelDoesntExistException {
+		// This returns null if such label was not added, which can lead
+		// to a NullPointerException.
+
+		if (!labels.containsKey(label)) {
+			throw new LabelDoesntExistException(label);
+		}
 		return labels.get(label);
 	}
 
