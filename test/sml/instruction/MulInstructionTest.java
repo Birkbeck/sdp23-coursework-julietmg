@@ -13,7 +13,7 @@ import static sml.Registers.Register.*;
 
 
 public class MulInstructionTest {
-    private Machine machine;
+  private Machine machine;
   private Registers registers;
 
   @BeforeEach
@@ -45,5 +45,5 @@ public class MulInstructionTest {
     instruction.execute(machine);
     Assertions.assertEquals(-8, machine.getRegisters().get(EAX));
   }
-    
+
 }

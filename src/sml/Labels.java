@@ -3,25 +3,44 @@ package sml;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-// TODO: write a JavaDoc for the class
+import java.util.stream.Collectors;
 
 /**
- *
- * @author ...
+ * This class represents labels, which are used to tag places in the code.
+ * They're used in the jnz instruction.
+ * @author jgebor01
  */
 public final class Labels {
 	private final Map<String, Integer> labels = new HashMap<>();
+
+    public static class DuplicateLabelException extends Exception {
+		private String label;
+		private int firstLine;
+		private int secondLine;
+		public DuplicateLabelException(String label, int addressFirst, int addressSecond) {
+			this.label = label;
+			this.firstLine = addressFirst + 1;
+			this.secondLine = addressSecond + 1;
+		}
+		public String toString() {
+			return label + " appears on both lines " + firstLine + " and " + secondLine;
+		}
+	}
 
 	/**
 	 * Adds a label with the associated address to the map.
 	 *
 	 * @param label the label
 	 * @param address the address the label refers to
+	 * @throws Exception
 	 */
-	public void addLabel(String label, int address) {
+	public void addLabel(String label, int address) throws DuplicateLabelException {
 		Objects.requireNonNull(label);
-		// TODO: Add a check that there are no label duplicates.
+	
+		if (labels.get(label) != null) {
+			throw new DuplicateLabelException(label, labels.get(label), address);
+		}
+		
 		labels.put(label, address);
 	}
 
@@ -33,11 +52,12 @@ public final class Labels {
 	 */
 	public int getAddress(String label) {
 		// TODO: Where can NullPointerException be thrown here?
-		//       (Write an explanation.)
-		//       Add code to deal with non-existent labels.
+		// (Write an explanation.)
+		// Add code to deal with non-existent labels.
 		return labels.get(label);
 	}
 
+	// ISSUE: O co chodzi?
 	/**
 	 * representation of this instance,
 	 * in the form "[label -> address, label -> address, ..., label -> address]"
@@ -47,10 +67,28 @@ public final class Labels {
 	@Override
 	public String toString() {
 		// TODO: Implement the method using the Stream API (see also class Registers).
-		return "";
+		// ?????
+		return labels.entrySet().stream()
+				.sorted(Map.Entry.comparingByKey())
+				.map(i -> i.getKey() + "=" + i.getValue())
+				.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 	// TODO: Implement equals and hashCode (needed in class Machine).
+
+	@Override
+	public int hashCode() {
+		return labels.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Labels l) {
+			return this.labels.equals(l.labels);
+		}
+
+		return false;
+	}
 
 	/**
 	 * Removes the labels

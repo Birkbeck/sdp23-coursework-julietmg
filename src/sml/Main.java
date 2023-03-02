@@ -2,6 +2,8 @@ package sml;
 
 import java.io.IOException;
 
+import sml.Labels.DuplicateLabelException;
+
 public class Main {
 	/**
 	 * Initialises the system and executes the program.
@@ -30,6 +32,8 @@ public class Main {
 		}
 		catch (IOException e) {
 			System.out.println("Error reading the program from " + args[0]);
+		} catch (DuplicateLabelException e) {
+			System.out.println("There is a duplicate label. " + e);
 		}
 	}
 }

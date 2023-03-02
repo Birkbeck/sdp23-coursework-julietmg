@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import sml.Instruction;
 import sml.Machine;
 import sml.Registers;
+import sml.Labels.DuplicateLabelException;
 
 import static sml.Registers.Register.*;
 
@@ -32,7 +33,11 @@ public class JnzInstructionTest {
 
     @Test
     void executeValid() {
-        machine.getLabels().addLabel("julcia", 62);
+        try {
+            machine.getLabels().addLabel("julcia", 62);
+        } catch (DuplicateLabelException e) {
+            Assertions.fail();
+        }
         registers.set(EAX, 0);
         Instruction instruction = new JnzInstruction(null, EAX, "julcia");
         int nextInstruction = instruction.execute(machine);
@@ -41,7 +46,11 @@ public class JnzInstructionTest {
 
     @Test
     void executeValidTwo() {
-        machine.getLabels().addLabel("julcia", 69);
+        try {
+            machine.getLabels().addLabel("julcia", 69);
+        } catch (DuplicateLabelException e) {
+            Assertions.fail();
+        }
         registers.set(EAX, 150);
         Instruction instruction = new JnzInstruction(null, EAX, "julcia");
         int nextInstruction = instruction.execute(machine);
