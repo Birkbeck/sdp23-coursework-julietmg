@@ -76,7 +76,6 @@ public final class Labels {
 		return labels.get(label);
 	}
 
-	// ISSUE: O co chodzi?
 	/**
 	 * representation of this instance,
 	 * in the form "[label -> address, label -> address, ..., label -> address]"
@@ -85,15 +84,12 @@ public final class Labels {
 	 */
 	@Override
 	public String toString() {
-		// TODO: Implement the method using the Stream API (see also class Registers).
-		// ?????
 		return labels.entrySet().stream()
 				.sorted(Map.Entry.comparingByKey())
 				.map(i -> i.getKey() + "=" + i.getValue())
 				.collect(Collectors.joining(", ", "[", "]"));
 	}
 
-	// TODO: Implement equals and hashCode (needed in class Machine).
 
 	@Override
 	public int hashCode() {

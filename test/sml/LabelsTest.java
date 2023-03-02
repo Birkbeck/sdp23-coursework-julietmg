@@ -40,4 +40,26 @@ class LabelsTest {
 
     }
 
+    
+
+    @Test
+    void testsToString() {
+        Labels k = new Labels();
+
+        try {
+            k.addLabel("mimi", 33);
+            k.addLabel("kiki", 567);
+            k.addLabel("pipi", 74889);
+            k.addLabel("bibi", 2);
+
+
+        } catch (DuplicateLabelException e) {
+            Assertions.fail();
+
+        }
+
+        Assertions.assertEquals("[bibi=2, kiki=567, mimi=33, pipi=74889]", k.toString()); 
+
+    }
+
 }
