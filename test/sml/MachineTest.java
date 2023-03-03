@@ -3,6 +3,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import sml.Labels.DuplicateLabelException;
+import sml.instruction.JnzInstruction;
+import sml.instruction.MovInstruction;
+import sml.instruction.MulInstruction;
+import sml.instruction.SubInstruction;
 
 import static sml.Registers.Register.*;
 
@@ -129,9 +133,25 @@ class MachineTest {
     k.getRegisters().set(registerTwo, value);
     Assertions.assertEquals(k.getRegisters().get(registerOne), k.getRegisters().get(registerTwo));
   }
-
   
-
-    
+  @Test
+  void testProgramCalculatesSixFactorial() {
+    Machine a = new Machine(new Registers());
+    a.getProgram().add(new MovInstruction(null, EAX, 6));
+    a.getProgram().add(new MovInstruction(null, EBX, 1));
+    a.getProgram().add(new MovInstruction(null, ECX, 1));
+    a.getProgram().add(new MulInstruction("f3", EBX, EAX));
+    try {
+        a.getLabels().addLabel("f3", a.getProgram().size()-1);
+    } catch (DuplicateLabelException e) {
+        Assertions.fail();
+    }
+    a.getProgram().add(new SubInstruction(null, EAX, ECX));
+    a.getProgram().add(new JnzInstruction(null, EAX, "f3"));
+    a.execute();
+    Assertions.assertEquals(0, a.getRegisters().get(EAX));
+    Assertions.assertEquals(720, a.getRegisters().get(EBX));
+    Assertions.assertEquals(1, a.getRegisters().get(ECX));
+  }    
  }
 
