@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
  * This class represents registers, which are used to store data.
  * @author jgebor01
  */
-
 public final class Registers implements RegistersInterface {
     private final Map<Register, Integer> registers = new HashMap<>();
 

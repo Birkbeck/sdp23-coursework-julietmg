@@ -10,7 +10,6 @@ import sml.RegisterName;
  * 
  * @author jgebor01
  */
-
 public class OutInstruction extends Instruction {
     private final RegisterName source;
 
@@ -19,18 +18,6 @@ public class OutInstruction extends Instruction {
     public OutInstruction(String label, RegisterName source) {
         super(label, OP_CODE);
         this.source = source;
-    }
-
-    @Override
-    public int execute(Machine m) {
-        int value = m.getRegisters().get(source);
-        System.out.println(value);
-        return NORMAL_PROGRAM_COUNTER_UPDATE;
-    }
-
-    @Override 
-    public String toString() {
-        return getLabelString() + getOpcode() + " " + source;
     }
 
     @Override
@@ -45,9 +32,14 @@ public class OutInstruction extends Instruction {
         if (!b_instruction.source.equals(this.source)) {
             return false;
         }
-
         return true;
+    }
 
+    @Override
+    public int execute(Machine m) {
+        int value = m.getRegisters().get(source);
+        System.out.println(value);
+        return NORMAL_PROGRAM_COUNTER_UPDATE;
     }
 
     @Override
@@ -58,4 +50,8 @@ public class OutInstruction extends Instruction {
         return hashResult;
     }
 
+    @Override
+    public String toString() {
+        return getLabelString() + getOpcode() + " " + source;
+    }
 }

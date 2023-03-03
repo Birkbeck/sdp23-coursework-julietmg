@@ -5,12 +5,12 @@ import sml.Machine;
 import sml.RegisterName;
 
 /**
- * Represents the subtraction instruction, which takes two registers, subtracts their values
+ * Represents the subtraction instruction, which takes two registers, subtracts
+ * their values
  * and saves the result in the first given register.
  * 
  * @author jgebor01
  */
-
 public class SubInstruction extends Instruction {
     private final RegisterName result;
     private final RegisterName source;
@@ -24,6 +24,24 @@ public class SubInstruction extends Instruction {
     }
 
     @Override
+    public boolean equals(Object b) {
+        if (!b.getClass().equals(SubInstruction.class)) {
+            return false;
+        }
+        SubInstruction b_instruction = (SubInstruction) b;
+        if (!b_instruction.label.equals(this.label)) {
+            return false;
+        }
+        if (!b_instruction.result.equals(this.result)) {
+            return false;
+        }
+        if (!b_instruction.source.equals(this.source)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public int execute(Machine m) {
         int value1 = m.getRegisters().get(result);
         int value2 = m.getRegisters().get(source);
@@ -32,37 +50,16 @@ public class SubInstruction extends Instruction {
     }
 
     @Override
+    public int hashCode() {
+        int hashResult = label.hashCode();
+        hashResult = hashResult * 31 + opcode.hashCode();
+        hashResult = hashResult * 31 + result.hashCode();
+        hashResult = hashResult * 31 + source.hashCode();
+        return hashResult;
+    }
+
+    @Override
     public String toString() {
         return getLabelString() + getOpcode() + " " + result + " " + source;
     }
-
-    @Override
-    public boolean equals(Object b) {
-		if (!b.getClass().equals(SubInstruction.class)) {
-			return false;
-		}
-		SubInstruction b_instruction = (SubInstruction) b;
-		if(!b_instruction.label.equals(this.label)) {
-			return false;
-		}
-		if(!b_instruction.result.equals(this.result)) {
-			return false;
-		}
-		if(!b_instruction.source.equals(this.source)) {
-			return false;
-		}
-		
-		return true;
-		
-	}
-
-    @Override
-    public int hashCode() {
-            int hashResult = label.hashCode();
-            hashResult = hashResult * 31 + opcode.hashCode();
-            hashResult = hashResult * 31 + result.hashCode();
-            hashResult = hashResult * 31 + source.hashCode();
-            return hashResult;
-    }
-
 }

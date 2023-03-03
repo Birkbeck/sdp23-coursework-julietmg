@@ -1,15 +1,15 @@
 package sml.instruction;
+
 import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
-
-/** 
+/**
  * Represents the add instruction, which takes two registers, adds their values
  * and saves the result in the first given register.
+ * 
  * @author jgebor01
  */
-
 public class AddInstruction extends Instruction {
 	private final RegisterName result;
 	private final RegisterName source;
@@ -23,36 +23,29 @@ public class AddInstruction extends Instruction {
 	}
 
 	@Override
-	public int execute(Machine m) {
-		int value1 = m.getRegisters().get(result);
-		int value2 = m.getRegisters().get(source);
-		m.getRegisters().set(result, value1 + value2);
-		return NORMAL_PROGRAM_COUNTER_UPDATE;
-	}
-
-	@Override
-	public String toString() {
-		return getLabelString() + getOpcode() + " " + result + " " + source;
-	}
-
-	@Override
 	public boolean equals(Object b) {
 		if (!b.getClass().equals(AddInstruction.class)) {
 			return false;
 		}
 		AddInstruction b_instruction = (AddInstruction) b;
-		if(!b_instruction.label.equals(this.label)) {
+		if (!b_instruction.label.equals(this.label)) {
 			return false;
 		}
-		if(!b_instruction.result.equals(this.result)) {
+		if (!b_instruction.result.equals(this.result)) {
 			return false;
 		}
-		if(!b_instruction.source.equals(this.source)) {
+		if (!b_instruction.source.equals(this.source)) {
 			return false;
 		}
-		
 		return true;
-		
+	}
+
+	@Override
+	public int execute(Machine m) {
+		int value1 = m.getRegisters().get(result);
+		int value2 = m.getRegisters().get(source);
+		m.getRegisters().set(result, value1 + value2);
+		return NORMAL_PROGRAM_COUNTER_UPDATE;
 	}
 
 	@Override
@@ -62,5 +55,10 @@ public class AddInstruction extends Instruction {
 		hashResult = hashResult * 31 + result.hashCode();
 		hashResult = hashResult * 31 + source.hashCode();
 		return hashResult;
+	}
+
+	@Override
+	public String toString() {
+		return getLabelString() + getOpcode() + " " + result + " " + source;
 	}
 }

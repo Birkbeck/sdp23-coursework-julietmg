@@ -1,7 +1,5 @@
 package sml;
 
-import sml.instruction.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.*;
@@ -12,7 +10,8 @@ import java.util.Scanner;
 import static sml.Registers.Register;
 
 /**
- * This class ....
+ * This class translates the instructions contained in a file into the internal
+ * representation of the program.
  * <p>
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  *
