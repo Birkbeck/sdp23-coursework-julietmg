@@ -19,13 +19,13 @@ public final class Machine {
 
 	private final List<Instruction> program = new ArrayList<>();
 
-	private final Registers registers;
+	private final RegistersInterface registers;
 
 	// The program counter; it contains the index (in program)
 	// of the next instruction to be executed.
 	private int programCounter = 0;
 
-	public Machine(Registers registers) {
+	public Machine(RegistersInterface registers) {
 		this.registers = registers;
 	}
 
@@ -53,7 +53,7 @@ public final class Machine {
 		return this.program;
 	}
 
-	public Registers getRegisters() {
+	public RegistersInterface getRegisters() {
 		return this.registers;
 	}
 

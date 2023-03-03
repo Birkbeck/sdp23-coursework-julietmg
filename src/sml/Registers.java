@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
  * @author jgebor01
  */
 
-public final class Registers {
+public final class Registers implements RegistersInterface {
     private final Map<Register, Integer> registers = new HashMap<>();
 
     public enum Register implements RegisterName {

@@ -17,8 +17,8 @@ class SubInstructionTest {
 
   @BeforeEach
   void setUp() {
-    machine = new Machine(new Registers());
-    registers = machine.getRegisters();
+    registers = new Registers();
+    machine = new Machine(registers);
   }
 
   @AfterEach

@@ -7,18 +7,41 @@ import org.junit.jupiter.api.Test;
 
 import sml.Instruction;
 import sml.Machine;
-import sml.Registers;
+import sml.RegisterName;
+import sml.RegistersInterface;
 
-import static sml.Registers.Register.*;
+import java.util.HashMap;
+import java.util.Map;
 
 class DivInstructionTest {
   private Machine machine;
-  private Registers registers;
+  private RegistersInterface registers;
+
+  public enum TestRegister implements RegisterName {
+    EAX, EBX;
+  }
 
   @BeforeEach
   void setUp() {
-    machine = new Machine(new Registers());
-    registers = machine.getRegisters();
+    // Creating one of the tests to verify that different register sets can be 
+    // effectively used to evaluate instructions.
+    registers = new RegistersInterface() {
+      private final Map<TestRegister, Integer> registers = new HashMap<>();
+
+      public void clear() {
+        for (TestRegister register : TestRegister.values())
+          registers.put(register, 0);
+      }
+
+      public void set(RegisterName register, int value) {
+        registers.put((TestRegister) register, value);
+      }
+
+      public int get(RegisterName register) {
+        return registers.get((TestRegister) register);
+      }
+    };
+    machine = new Machine(registers);
   }
 
   @AfterEach
@@ -29,19 +52,19 @@ class DivInstructionTest {
 
   @Test
   void executeValid() {
-    registers.set(EAX, 80);
-    registers.set(EBX, 10);
-    Instruction instruction = new DivInstruction(null, EAX, EBX);
+    registers.set(TestRegister.EAX, 80);
+    registers.set(TestRegister.EBX, 10);
+    Instruction instruction = new DivInstruction(null, TestRegister.EAX, TestRegister.EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(8, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(8, machine.getRegisters().get(TestRegister.EAX));
   }
 
   @Test
   void executeValidTwo() {
-    registers.set(EAX, 3);
-    registers.set(EBX,2);
-    Instruction instruction = new DivInstruction(null, EAX, EBX);
+    registers.set(TestRegister.EAX, 3);
+    registers.set(TestRegister.EBX, 2);
+    Instruction instruction = new DivInstruction(null, TestRegister.EAX, TestRegister.EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(1, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(1, machine.getRegisters().get(TestRegister.EAX));
   }
 }

@@ -24,8 +24,8 @@ public class OutInstructionTest {
   @BeforeEach
   void setUp() {
     System.setOut(new PrintStream(output));
-    machine = new Machine(new Registers());
-    registers = machine.getRegisters();
+    registers = new Registers();
+    machine = new Machine(registers);
   }
 
   @AfterEach
